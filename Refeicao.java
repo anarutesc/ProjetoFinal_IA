@@ -19,11 +19,12 @@ public class Refeicao {
     
     public Refeicao(Paciente p, LinkedList<Alimento> r, String refeicao){
         calorias = p.funcao();
+        this.refeicao = refeicao;
         this.r = r;
         if(refeicao == "cafe"){
-            calorias = (int)(calorias*0.35);
-        }else if(refeicao == "almoco"){
             calorias = (int)(calorias*0.4);
+        }else if(refeicao == "almoco"){
+            calorias = (int)(calorias*0.35);
         }else if(refeicao == "janta"){
             calorias = (int)(calorias*0.25);
         }
@@ -31,6 +32,10 @@ public class Refeicao {
     
     public int getId(){
         return id;
+    }
+    
+    public String getRefeicao(){
+        return refeicao;
     }
 
     public LinkedList<Alimento> getR() {
