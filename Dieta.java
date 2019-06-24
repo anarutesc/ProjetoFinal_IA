@@ -15,9 +15,14 @@ import java.util.Random;
  * @author ana_r
  */
 public class Dieta {
-    TabelaAlimentos ta;
-    LinkedList<Refeicao> refeicoes = new LinkedList<Refeicao>();
-    Paciente paciente;
+    private TabelaAlimentos ta;
+    private LinkedList<Refeicao> refeicoes = new LinkedList<Refeicao>();
+    private int codigo;
+    private Paciente paciente;
+    
+    public int getCodigo(){
+        return codigo;
+    }
     
     public Dieta(Paciente p, TabelaAlimentos ta){
         this.paciente = p;
@@ -31,15 +36,15 @@ public class Dieta {
            for(int p = 0; p < ta.getnProt(); p++){
                 for(int fr = 0; fr < ta.getnFrutas(); fr++){
                     for(int fe = 0; fe < ta.getnFerro(); fe++){
-                        for(int l = 0; l < ta.getnLeg(); l++){
-                            for(int s = 0; s < ta.getnSalada(); s++){
+                        for(int s= 0; s < ta.getnSalada(); s++){
+                            for(int l = 0; l < ta.getnLeg(); l++){
                                 dieta = new LinkedList<Alimento>();
                                 dieta.add(ta.getLista_carb().get(c));
                                 dieta.add(ta.getLista_prot().get(p));
                                 dieta.add(ta.getLista_fruta().get(fr));
                                 dieta.add(ta.getLista_ferro().get(fe));
-                                dieta.add(ta.getLista_leg().get(l));
                                 dieta.add(ta.getLista_salada().get(s));
+                                dieta.add(ta.getLista_leg().get(l));
                                 r = new Refeicao(this.paciente, dieta, "almoco");
                                 refeicoes.add(r);
                             }
@@ -52,10 +57,10 @@ public class Dieta {
     
     public Refeicao SimulatedAnnealing() {
         Dietas();
-        double Ti = 150;
+        double Ti = 100;
         double alfa = 0.85;
         double Tf = 1;
-        int L = 1;
+        int L = 4;
         double T_atual = Ti;
 
         int valor_max = refeicoes.size();
@@ -63,6 +68,7 @@ public class Dieta {
         int pos = r.nextInt(valor_max);
         int custo = abs(refeicoes.get(pos).funcao());
         Refeicao refeicao = refeicoes.get(pos);
+        codigo = pos;
         
         while (T_atual > Tf) {
             for (int i = 0; i < L; i++) {
@@ -73,10 +79,12 @@ public class Dieta {
                 if (custo_aux < custo) {
                     custo = custo_aux;
                     refeicao = refeicoes.get(pos);
+                    codigo = pos;
                 } else {
                     if (r.nextDouble() < (Math.exp(-(custo_aux - custo) / T_atual))) {
                         custo = custo_aux;
                         refeicao = refeicoes.get(pos);
+                        codigo = pos;
                     }
                 }
             }
